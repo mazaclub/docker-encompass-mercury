@@ -1,13 +1,13 @@
 #!/bin/bash -x
 #######
 ###### This provides a generic example to start an Encompass-Mercury server for a coin
-IMAGE="mazaclub/encompass-mercury-start"
+IMAGE="mazaclub/encompass-mercury:dash"
 GROUP="encompass-mercury"
 APP="encompass-mercury"
 HOST_DATA_PREFIX="/opt/data/encompass-mercury"
-MAZADIR="/home/maza/.${COIN}-v2"
+MAZADIR="/home/maza/.${COIN}"
 DATA_VOLDIR="/var/encompass-mercury"
-HOSTNAME="start.mercury.maza.club"
+HOSTNAME="dash.mercury.maza.club"
 NAME="${GROUP}_${APP}"
 #DATA=
 #APPDATA=electrum-nmcdata
