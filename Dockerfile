@@ -1,4 +1,4 @@
-FROM		mazaclub/nmcpay-base
+FROM		mazaclub/namecoind-base
 # IMAGE mazaclub/encompass-mercury:nmc
 MAINTAINER	Rob Nelson <guruvan@maza.club>
 
