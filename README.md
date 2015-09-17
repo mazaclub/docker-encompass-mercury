@@ -14,4 +14,4 @@ Pull Requests with additional coins always welcomed!!
 Automated builds are currently available for:
  - START - Startcoin
  - DASH  - Dashpay
-
+ - NMC   - Namecoin

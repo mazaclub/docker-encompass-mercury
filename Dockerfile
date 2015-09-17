@@ -1,5 +1,5 @@
-FROM		mazaclub/dashpay-base
-# IMAGE mazaclub/encompass-mercury:dash
+FROM		mazaclub/nmcpay-base
+# IMAGE mazaclub/encompass-mercury:nmc
 MAINTAINER	Rob Nelson <guruvan@maza.club>
 
 EXPOSE		50001 50002 8000
