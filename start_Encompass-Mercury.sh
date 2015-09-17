@@ -5,16 +5,10 @@ IMAGE="mazaclub/encompass-mercury:nmc"
 GROUP="encompass-mercury"
 APP="encompass-mercury"
 HOST_DATA_PREFIX="/opt/data/encompass-mercury"
-MAZADIR="/home/maza/.${COIN}"
+COINDIR="/home/coin/.${COIN}"
 DATA_VOLDIR="/var/encompass-mercury"
 HOSTNAME="nmc.mercury.maza.club"
 NAME="${GROUP}_${APP}"
-#DATA=
-#APPDATA=electrum-nmcdata
-#DATADIR=/data/electrum-nmc-server
-#PORT1="-p 50001:50003"
-#PORT2="-p 50002:50004"
-#PORT3="-p 8000:8000"
 
 #check_data () {
 # docker ps -a |grep ${GROUP}_${APPDATA} || docker run -d --name=${GROUP}_${APPDATA} -v ${DATA_VOLDIR}  ${DATA}
