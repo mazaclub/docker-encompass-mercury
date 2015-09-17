@@ -7,7 +7,7 @@ class Currency(cryptocur.CryptoCur):
     # script_addr
     genesis_hash = '000000000062b72c5e2ceb45fbc8587e807c155b0da735e6483dfba2f0a9c770'
 
-    coin_name = 'YOURcoin'
-    code = 'XYZ'
+    coin_name = 'XXXX_COIN'
+    code = 'XXXX_SYM'
 
-    irc_channel = '#electrum-xyz'
+    irc_channel = '#electrum-XXXX_SYM'

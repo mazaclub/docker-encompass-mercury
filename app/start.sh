@@ -12,7 +12,7 @@ ENCOMPASS_MERCURY_PORT=${ENCOMPASS_MERCURY_PORT:-50001}
 ENCOMPASS_MERCURY_SSLPORT=${ENCOMPASS_MERCURY_SSL_PORT:-50002}
 COIND=${COIND:-localhost}
 COINDIR=${COINDIR:-/home/${USER}/.${COIN}}
-RPCPORT=${RPCPORT:-8888}
+RPCPORT=${RPCPORT:-XXXX_RPCPORT}
 RPCUSER=${RPCUSER:-$(grep rpcuser "${COINDIR}"/${COIN}.conf |awk -F= '{print $2}')}
 RPCPASSWORD=${RPCPASSWORD:-$(grep rpcpassword "${COINDIR}"/${COIN}.conf |awk -F= '{print $2}')}
 txidx=$(grep "txindex=" "${COINDIR}"/${COIN}.conf |awk -F= '{print $2}')
@@ -43,4 +43,4 @@ IFS="" sed -e 's/coind_host\ \=.*/coind_host\ \=\ '${COIND}'/g' \
 	-e 's/^stratum_tcp_port\ \=.*/stratum_tcp_port\ \=\ '${ENCOMPASS_MERCURY_PORT}'/g' \
 	encompass-mercury.conf > /tmp/new-encompass-mercury.conf
 cp /tmp/new-encompass-mercury.conf /etc/encompass-mercury.conf
-exec /app/run_encompass_mercury --coin ${COIN}
+exec /app/run_encompass_mercury --coin ${COIN_SYM}

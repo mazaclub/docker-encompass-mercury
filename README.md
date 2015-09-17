@@ -15,3 +15,4 @@ Automated builds are currently available for:
  - START - Startcoin
  - DASH  - Dashpay
  - NMC   - Namecoin
+ - MZC   - Mazacoin
