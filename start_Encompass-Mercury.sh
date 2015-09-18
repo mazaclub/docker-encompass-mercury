@@ -1,13 +1,13 @@
 #!/bin/bash -x
 #######
 ###### This provides a generic example to start an Encompass-Mercury server for a coin
-IMAGE="mazaclub/encompass-mercury:nmc"
+IMAGE="mazaclub/encompass-mercury:XXXX_SYM"
 GROUP="encompass-mercury"
 APP="encompass-mercury"
 HOST_DATA_PREFIX="/opt/data/encompass-mercury"
 COINDIR="/home/coin/.${COIN}"
 DATA_VOLDIR="/var/encompass-mercury"
-HOSTNAME="nmc.mercury.maza.club"
+HOSTNAME="XXXX_SYM.mercury.maza.club"
 NAME="${GROUP}_${APP}"
 
 #check_data () {
@@ -22,7 +22,7 @@ docker run -d \
   --restart=always \
   -p 50002:50002 \
   -p 8000:8000 \
-  -p 9347:9347 \
+  -p XXXX_P2PPORT:XXXX_P2PPORT \
   -v ${HOST_DATA_PREFIX}/${COIN}:${COINDIR}
   -v ${HOST_DATA_PREFIX}/encompass-mercury:${DATA_VOLDIR}
   ${IMAGE}
