@@ -12,7 +12,7 @@ ENCOMPASS_MERCURY_PORT=${ENCOMPASS_MERCURY_PORT:-50001}
 ENCOMPASS_MERCURY_SSLPORT=${ENCOMPASS_MERCURY_SSL_PORT:-50002}
 COIND=${COIND:-localhost}
 COINDIR=${COINDIR:-/home/${USER}/.${COIN}}
-RPCPORT=${RPCPORT:-XXXX_RPCPORT}
+RPCPORT=${RPCPORT:-1441}
 RPCUSER=${RPCUSER:-$(grep rpcuser "${COINDIR}"/${COIN}.conf |awk -F= '{print $2}')}
 RPCPASSWORD=${RPCPASSWORD:-$(grep rpcpassword "${COINDIR}"/${COIN}.conf |awk -F= '{print $2}')}
 txidx=$(grep "txindex=" "${COINDIR}"/${COIN}.conf |awk -F= '{print $2}')

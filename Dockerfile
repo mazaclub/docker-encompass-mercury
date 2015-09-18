@@ -1,5 +1,5 @@
-FROM		mazaclub/XXXX_COINd-base
-# IMAGE mazaclub/encompass-mercury:XXXX_SYM
+FROM		mazaclub/groestlcoind-base
+# IMAGE mazaclub/encompass-mercury:grs
 MAINTAINER	Rob Nelson <guruvan@maza.club>
 
 EXPOSE		50001 50002 8000
