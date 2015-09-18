@@ -1,0 +1,46 @@
+#!/bin/sh
+set -e
+# note this depends on being on a phusion base image
+# other applicatiosn need another method to pass ENV values
+. /etc/container_environment.sh
+if [ -z ${COIN} ]
+then
+  COIN=${COIN:-nmc}
+  echo "export COIN=${COIN}" >> /etc/container_environment.sh
+fi
+if [ -z ${COINDIR} ]
+then
+  COINDIR=${COINDIR:-/home/coin/.${COIN}}
+  echo "export COINDIR=${COINDIR}" >> /etc/container_environment.sh
+fi
+APP=encompass-mercury
+USER=${USER:-coin}
+
+echo "$(date) Waiting for ${COIN}.conf in ${COINDIR}"
+while true
+do
+  test -f "${COINDIR}"/${COIN}.conf && break
+  sleep 1
+done
+echo "$(date) Allowing ${COIN}d 30sec to startup"
+sleep 30
+
+echo "Starting ${APP} for ${COIN}"
+cd /app
+
+
+if [ -d /home/${USER} ] ; then
+   chown ${USER}.${USER} /home/${USER}
+fi
+
+chmod +x /app/start.sh
+chown -R ${USER}.${USER} /app
+touch /var/log/encompass-mercury.log
+touch /var/log/encompass-mercury-nmc.log
+chown ${USER}.${USER} /var/log/encompass-mercury.log
+chown ${USER}.${USER} /var/log/encompass-mercury-nmc.log
+chown -R ${USER}.${USER} /var/encompass-mercury
+chown ${USER}.${USER} /etc/encompass-mercury.conf
+cp /etc/container_environment.sh /app/encompass-mercury.env
+chown ${USER}.${SUSER} /app/encompass-mercury.env
+exec su ${USER} -c /app/start.sh
