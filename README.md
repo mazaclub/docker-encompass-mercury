@@ -19,6 +19,8 @@ mazaclub/coind-base
 mazaclub/{COIN}d-base
 
 Pull Requests with additional coins always welcomed!! 
+Please submit all PRs to the develop branch. Changes will be merged from develop into individual coin
+branches for dockerhub builds. 
 
 Automated builds are currently available for:
  - START - Startcoin
@@ -28,6 +30,7 @@ Automated builds are currently available for:
 CoreOS Unit files are provided, as is example shellscript.
 
 A Typical run to build the initial DB
+(most variables are set in Dockerfile and startup scripts - setting here will override all internal settings)
 ```
 docker run  --name encompass-mercury_start   \
   -v /mnt/tmp/encompass-mercury-start/var/encompass-mercury:/var/encompass-mercury  \
@@ -38,6 +41,8 @@ docker run  --name encompass-mercury_start   \
   -e ENCOMPASS_MERCURY_HOSTNAME=start.mercury.mazaclub  \
   -e HOSTNAME=start.mercury.mazaclub  \
   -e COIND=localhost  \
+  -e COIN=startcoin \
+  -e COIN_SYM=start \
   -e RPCPORT=9347  \
   -e P2PORT=9247  \
   -h start.mercury.mazaclub   \
@@ -46,6 +51,12 @@ docker run  --name encompass-mercury_start   \
  - The initial database "forging" can take a long time. If you do not already have a
 copy of the desired blockchain data, txindexed, you will need to allow additional time for this as well.
  - Time to forge depends on the chain, block interval, transactions per block, and your hardware. This can range from a few hours, to more than a day for some coins, on some hardware.
+ - It's recommended to run as much of the affected filesystem in RAM (tmpfs), putting blockchain data and Encompass-Mercury 
+   leveldb data on tmpfs storage will greatly reduce the time to forge the database. 
+ - Recommendations for forging initial db do NOT apply to normal operation. In initial forging each transaction must be verified and written
+   to the Encompass-Mercury db. This causes excessive disk activity. 
+ - Additional performance could be gained by running /var/lib/docker on tmpfs as well
+
  - Image may not start encompass-mercury correctly on initial forge. Workaround:
    ```
    docker-enter [container-id]
