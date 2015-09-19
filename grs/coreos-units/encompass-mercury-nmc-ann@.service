@@ -1,0 +1,46 @@
+[Unit]
+Description=ElectrumServer: %p for  %i SkyDNS Service Announcement
+Requires=encompass-mercury-nmcpay@%i.service
+After=encompass-mercury-nmcpay@%i.service
+BindsTo=encompass-mercury-nmcpay@%i.service
+
+[Service]
+User=root
+Type=notify
+NotifyAccess=all
+TimeoutStartSec=1200
+TimeoutStopSec=15
+Restart=always
+RestartSec=20
+EnvironmentFile=/etc/docker.env
+EnvironmentFile=/etc/region.env
+EnvironmentFile=/etc/eth0.env
+EnvironmentFile=/etc/instance-id.env
+EnvironmentFile=/etc/environment
+ExecStartPre=/usr/bin/docker run --rm -v /opt/bin:/opt/bin ibuildthecloud/systemd-docker
+ExecStartPre=-/usr/bin/docker kill %p_%i
+ExecStartPre=-/usr/bin/docker rm %p_%i
+
+ExecStart=/opt/bin/systemd-docker run --rm  --name %p_%i  \
+-e "ETCD_ADDR=http://etcd.domain:4001"  \
+-e "SKYDNS_PORT=50002"  \
+-e SKYDNS_CONTAINER=encompass-mercury-nmcpay_%i  \
+-e "SKYDNS_ENVIRONMENT=${SKYDNS_ENVIRONMENT}" \
+-e "SKYDNS_DOMAIN_PATH=${SKYDNS_DOMAIN_PATH}" \
+-e "RT53_DOMAIN_ID=ZXXXXXXXXXX"  \
+-e "RT53_DOMAIN=domain.tld"  \
+-e "RT53_ZONE=${REGION}"  \
+-e "RT53_NAME=nmcpay"  \
+-e "RT53_REGION=us-west-2"  \
+-e "RT53_PUBIP=${COREOS_PUBLIC_IPV4}" \
+-e "RT53_INFO=${COREOS_PRIVATE_IPV4}" \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-h %H.%p.${SKYDNS_ZONE}.${SKYDNS_DOMAIN} \
+shastafareye/rt53-skydns-announce
+
+ExecStop=-/usr/bin/docker kill %p_%i
+ExecStop=-/usr/bin/docker rm %p_%i
+
+[X-Fleet]
+Conflicts=%p@*.service
+MachineOf=encompass-mercury-nmcpay@%i.service

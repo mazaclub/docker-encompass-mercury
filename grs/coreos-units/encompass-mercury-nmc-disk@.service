@@ -1,0 +1,18 @@
+[Unit]
+After=skydns@mazaclub.service
+Before=encompass-mercury-nmcpay@%i.service
+
+[Service]
+TimeoutStartSec=900
+User=root
+Restart=on-failure
+RemainAfterExit=yes
+ExecStartPre=-/usr/bin/docker stop %p_%i
+ExecStartPre=-/usr/bin/docker rm %p_%i
+ExecStartPre=/usr/bin/docker pull mazaclub/encompass-mercury-nmcpay
+ExecStart=/bin/sh -c 'if [ ! -d /mnt/tmp/%i/%p/var/encompass-mercury ];  then mkdir -pv /mnt/tmp/%i/%p/var/encompass-mercury; fi'
+ExecStop=-/usr/bin/docker stop %p_%i
+ExecStopPost=-/usr/bin/docker rm %p_%i
+
+[X-Fleet]
+Conflicts=%p@*.service
