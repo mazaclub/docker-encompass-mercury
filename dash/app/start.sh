@@ -10,6 +10,7 @@ USER=${USER:-coin}
 ENCOMPASS_MERCURY_HOSTNAME=${ENCOMPASS_MERCURY_HOSTNAME:-${HOSTNAME}}
 ENCOMPASS_MERCURY_PORT=${ENCOMPASS_MERCURY_PORT:-50001}
 ENCOMPASS_MERCURY_SSLPORT=${ENCOMPASS_MERCURY_SSL_PORT:-50002}
+ENCOMPASS_MERCURY_IRCNICK=${ENCOMPASS_MERCURY_IRCNICK:-${COIN}_mazaclub}
 COIND=${COIND:-localhost}
 COINDIR=${COINDIR:-/home/${USER}/.${COIN}}
 RPCPORT=${RPCPORT:-9998}
@@ -41,6 +42,7 @@ IFS="" sed -e 's/coind_host\ \=.*/coind_host\ \=\ '${COIND}'/g' \
 	-e 's/^username\ \=.*/username\ \=\ '${USER}'/g' \
 	-e 's/^stratum_tcp_ssl_port\ \=.*/stratum_tcp_ssl_port\ \=\ '${ENCOMPASS_MERCURY_SSLPORT}'/g' \
 	-e 's/^stratum_tcp_port\ \=.*/stratum_tcp_port\ \=\ '${ENCOMPASS_MERCURY_PORT}'/g' \
+	-e 's/^irc_nick\ \=.*/irc_nick\ \=\ '${ENCOMPASS_MERCURY_IRCNICK}'/g' \
 	encompass-mercury.conf > /tmp/new-encompass-mercury.conf
 cp /tmp/new-encompass-mercury.conf /etc/encompass-mercury.conf
 exec /app/run_encompass_mercury --coin ${COIN}
