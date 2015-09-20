@@ -48,4 +48,5 @@ chown -R ${USER}.${USER} /var/encompass-mercury
 chown ${USER}.${USER} /etc/encompass-mercury.conf
 cp /etc/container_environment.sh /app/encompass-mercury.env
 chown ${USER}.${SUSER} /app/encompass-mercury.env
+chown -R ${USER}.${USER} /home/${USER}
 exec su ${USER} -c /app/start.sh

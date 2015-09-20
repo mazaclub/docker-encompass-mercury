@@ -5,12 +5,12 @@ set -e
 . /etc/container_environment.sh
 if [ -z ${COIN} ]
 then
-  COIN=${COIN:-mazacoin}
+  COIN=${COIN:-groestlcoin}
   echo "export COIN=${COIN}" >> /etc/container_environment.sh
 fi
 if [ -z ${COIN_SYM} ]
 then
-  COIN_SYM=${COIN_SYM:-mzc}
+  COIN_SYM=${COIN_SYM:-grs}
   echo "export COIN_SYM=${COIN_SYM}" >> /etc/container_environment.sh
 fi
 if [ -z ${COINDIR} ]
@@ -41,11 +41,12 @@ fi
 chmod +x /app/start.sh
 chown -R ${USER}.${USER} /app
 touch /var/log/encompass-mercury.log
-touch /var/log/encompass-mercury-mzc.log
+touch /var/log/encompass-mercury-grs.log
 chown ${USER}.${USER} /var/log/encompass-mercury.log
-chown ${USER}.${USER} /var/log/encompass-mercury-mzc.log
+chown ${USER}.${USER} /var/log/encompass-mercury-grsc.log
 chown -R ${USER}.${USER} /var/encompass-mercury
 chown ${USER}.${USER} /etc/encompass-mercury.conf
 cp /etc/container_environment.sh /app/encompass-mercury.env
 chown ${USER}.${SUSER} /app/encompass-mercury.env
+chown -R ${USER}.${USER} /home/${USER}
 exec su ${USER} -c /app/start.sh
