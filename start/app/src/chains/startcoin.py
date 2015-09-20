@@ -7,3 +7,6 @@ class Currency(cryptocur.CryptoCur):
  
         coin_name = 'StartCOIN'
         code = 'START'
+        irc_nick_prefix = 'EM_start_'
+        irc_channel = '#electrum-start'
+      

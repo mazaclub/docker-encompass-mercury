@@ -7,5 +7,5 @@ class Currency(cryptocur.CryptoCur):
 
     coin_name = 'Namecoin'
     code = 'NMC'
-
+    irc_nick_prefix = 'EM_nmc_'
     irc_channel = '#electrum-nmc'

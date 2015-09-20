@@ -9,5 +9,5 @@ class Currency(cryptocur.CryptoCur):
 
     coin_name = 'groestlcoin'
     code = 'grs'
-
-    irc_channel = '#electrum-grs'
+    irc_nick_prefix = 'EM_grs_'
+    irc_channel = '#groestlcoin'
