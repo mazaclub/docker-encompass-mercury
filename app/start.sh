@@ -18,6 +18,7 @@ RPCPASSWORD=${RPCPASSWORD:-$(grep rpcpassword "${COINDIR}"/${COIN}.conf |awk -F=
 txidx=$(grep "txindex=" "${COINDIR}"/${COIN}.conf |awk -F= '{print $2}')
 TXINDEX=${TXINDEX:-${txidx}}
 ENCOMPASS_MERCURY_PASSWORD=$(egrep '^password =' /etc/encompass-mercury.conf|awk -F= '{print $2}')
+ENCOMPASS_MERCURY_IRCNICK=${ENCOMPASS_MERCURY_IRCNICK:-${COIN}_mazaclub}
 
 
 test -z $ENCOMPASS_MERCURY_PASSWORD && ENCOMPASS_MERCURY_PASSWORD=$(apg -a 0 -m 32 -x 32 -n 1)
@@ -41,6 +42,7 @@ IFS="" sed -e 's/coind_host\ \=.*/coind_host\ \=\ '${COIND}'/g' \
 	-e 's/^username\ \=.*/username\ \=\ '${USER}'/g' \
 	-e 's/^stratum_tcp_ssl_port\ \=.*/stratum_tcp_ssl_port\ \=\ '${ENCOMPASS_MERCURY_SSLPORT}'/g' \
 	-e 's/^stratum_tcp_port\ \=.*/stratum_tcp_port\ \=\ '${ENCOMPASS_MERCURY_PORT}'/g' \
+        -e 's/^irc_nick\ \=.*/irc_nick\ \=\ '${ENCOMPASS_MERCURY_IRCNICK}'/g' \
 	encompass-mercury.conf > /tmp/new-encompass-mercury.conf
 cp /tmp/new-encompass-mercury.conf /etc/encompass-mercury.conf
 exec /app/run_encompass_mercury --coin ${COIN_SYM}
