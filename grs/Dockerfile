@@ -17,6 +17,7 @@ RUN		echo "bitcoin hard nofile 65536" >> /etc/security/limits.conf \
 		  && cd / \
 		  && git clone https://github.com/mazaclub/encompass-mercury \
 		  && cd /encompass-mercury \
+                  && git checkout e-upstream \
 		  && python setup.py install \
                   && mkdir -pv /app \
                   && mv /encompass-mercury/* /app \

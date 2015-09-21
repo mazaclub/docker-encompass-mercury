@@ -1,5 +1,5 @@
-FROM		mazaclub/namecoind-base
-# IMAGE mazaclub/encompass-mercury:nmc
+FROM		mazaclub/mazacoind-base
+# IMAGE mazaclub/encompass-mercury:mzc
 MAINTAINER	Rob Nelson <guruvan@maza.club>
 
 EXPOSE		50001 50002 8000
@@ -17,6 +17,7 @@ RUN		echo "bitcoin hard nofile 65536" >> /etc/security/limits.conf \
 		  && cd / \
 		  && git clone https://github.com/mazaclub/encompass-mercury \
 		  && cd /encompass-mercury \
+                  && git checkout e-upstream \
 		  && python setup.py install \
                   && mkdir -pv /app \
                   && mv /encompass-mercury/* /app \
