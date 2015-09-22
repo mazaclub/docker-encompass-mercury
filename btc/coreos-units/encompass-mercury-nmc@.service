@@ -1,0 +1,38 @@
+[Unit]
+Description=Encompass-Mercury: %p for %i
+After=%p-disk@%i.service
+Requires=%p-disk@%i.service
+
+[Service]
+User=root
+Type=notify
+NotifyAccess=all
+TimeoutStartSec=900
+TimeoutStopSec=15
+Restart=always
+RestartSec=10s
+ExecStartPre=/usr/bin/docker run --rm -v /opt/bin:/opt/bin ibuildthecloud/systemd-docker
+ExecStartPre=-/usr/bin/docker kill %p_%i
+ExecStartPre=-/usr/bin/docker rm %p_%i
+ExecStart=/opt/bin/systemd-docker run \
+--name %p_%i  \
+-v /mnt/tmp/%i/%p-disk/var/encompass-mercury:/var/encompass-mercury \
+-v /mnt/tmp/%i/%p-disk/home/coin:/home/coin \
+-v /mnt/tmp/%i/%p-disk/app/certs:/app/certs \
+-p 50001:50001  \
+-p 50002:50002  \
+-p 8000:8000  \
+-e TXINDEX=1 \
+-e ENCOMPASS_MERCURY_HOSTNAME=%p.mercury.DOMAIN \
+-e HOSTNAME=%p.mercury.DOMAIN \
+-e COIND=localhost \
+-e RPCPORT=9998 \
+-e P2PORT=9999 \
+-h %p.mercury.DOMAIN  \
+mazaclub/encompass-mercury-nmcpay
+ExecStop=-/usr/bin/docker kill %p_%i
+ExecStopPost=-/usr/bin/docker rm %p_%i
+
+[X-Fleet]
+Conflicts=%p@*.service 
+MachineOf=%p-disk@%i.service
