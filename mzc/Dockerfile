@@ -10,7 +10,7 @@ ENV		COIND localhost
 
 ADD		. /
 
-RUN             export GIT_BRANCH=$(git symbolic-ref --short -q HEAD)
+RUN             export GIT_BRANCH=$(cat .branch)
 # In Order for the build to work correctly, the branch in 
 # docker-encompass-mercury must match the branch in encompass-mercury
 
