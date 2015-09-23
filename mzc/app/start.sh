@@ -18,7 +18,13 @@ RPCPASSWORD=${RPCPASSWORD:-$(grep rpcpassword "${COINDIR}"/${COIN}.conf |awk -F=
 txidx=$(grep "txindex=" "${COINDIR}"/${COIN}.conf |awk -F= '{print $2}')
 TXINDEX=${TXINDEX:-${txidx}}
 ENCOMPASS_MERCURY_PASSWORD=$(egrep '^password =' /etc/encompass-mercury.conf|awk -F= '{print $2}')
-ENCOMPASS_MERCURY_IRCNICK=${ENCOMPASS_MERCURY_IRCNICK:-${COIN}_mazaclub}
+ENCOMPASS_MERCURY_IRCNICK=${ENCOMPASS_MERCURY_IRCNICK:-$[ 1 + $[RANDOM % 99999 ]]__mazaclub}
+ENCOMPASS_MERCURY_BLOCK_CACHE_SIZE=${ENCOMPASS_MERCURY_BLOCK_CACHE_SIZE:-120}
+ENCOMPASS_MERCURY_PRUNING_LIMIT=${ENCOMPASS_MERCURY_PRUNING_LIMIT:-10000}
+ENCOMPASS_MERCURY_DONATION_ADDR=${ENCOMPASS_MERCURY_DONATION_ADDR:-MPXEVRtXTBrz6xfn9iCyzK7Kr8P69oZjyq}
+ENCOMPASS_MERCURY_REPORT_HOST=${ENCMPASS_MERCURY_REPORT_HOST:-${ENCOMPASS_MERCURY_HOSTNAME}}
+ENCOMPASS_MERCURY_OUTSIDE_TCP_PORT=${ENCOMPASS_MERCURY_OUTSIDE_TCP_PORT:-${ENCOMPASS_MERCURY_TCP_PORT}}
+ENCOMPASS_MERCURY_OUTSIDE_SSL_PORT=${ENCOMPASS_MERCURY_OUTSIDE_SSL_PORT:-${ENCOMPASS_MERCURY_SSL_PORT}}
 
 
 test -z $ENCOMPASS_MERCURY_PASSWORD && ENCOMPASS_MERCURY_PASSWORD=$(apg -a 0 -m 32 -x 32 -n 1)
@@ -43,6 +49,24 @@ IFS="" sed -e 's/coind_host\ \=.*/coind_host\ \=\ '${COIND}'/g' \
 	-e 's/^stratum_tcp_ssl_port\ \=.*/stratum_tcp_ssl_port\ \=\ '${ENCOMPASS_MERCURY_SSLPORT}'/g' \
 	-e 's/^stratum_tcp_port\ \=.*/stratum_tcp_port\ \=\ '${ENCOMPASS_MERCURY_PORT}'/g' \
         -e 's/^irc_nick\ \=.*/irc_nick\ \=\ '${ENCOMPASS_MERCURY_IRCNICK}'/g' \
-	encompass-mercury.conf > /tmp/new-encompass-mercury.conf
+        -e 's/^pruning_limit\ \=.*/pruning_limit\ \=\ '${ENCOMPASS_MERCURY_PRUNING_LIMIT}'/g' \
+        -e 's/^block_cache_size\ \=.*/block_cache_size\ \=\ '${ENCOMPASS_MERCURY_BLOCK_CACHE_SIZE}'/g' \
+        -e 's/^report_stratum_tcp_ssl_port\ \=.*/report_stratum_tcp_ssl_port\ \=\ '${ENCOMPASS_MERCURY_OUTSIDE_SSL_PORT}'/g' \
+        -e 's/^report_stratum_tcp_port\ \=.*/report_stratum_tcp_port\ \=\ '${ENCOMPASS_MERCURY_OUTSIDE_TCP_PORT}'/g' \
+        -e 's/^report_host\ \=.*/report_host\ \=\ '${ENCOMPASS_MERCURY_REPORT_HOST}'/g' \
+        encompass-mercury.conf > /tmp/new-encompass-mercury.conf
 cp /tmp/new-encompass-mercury.conf /etc/encompass-mercury.conf
+shopt -s nocasematch
+if [[ "${ENCOMPASS_MERCURY_IRC_OVERRIDE}" = "true" ]]; then
+  test -z ${ENCOMPASS_MERCURY_IRC_CHANNEL} \
+   || sed -e 's/^irc_channel\ \=.*/irc_channel\ \=\ '${ENCOMPASS_MERCURY_IRC_CHANNEL}'/g' \
+           /app/src/chains/${COIN}.py > /tmp/new_${COIN}.py
+           mv /tmp/new_${COIN}.py /app/src/chains/${COIN}.py
+  test -z ${ENCOMPASS_MERCURY_IRCNICK_PREFIX} \
+   || sed -e 's/^irc_nick_prefix\ \=.*/irc_nick_prefix\ \=\ '${ENCOMPASS_MERCURY_IRCNICK_PREFIX}'/g' \
+           /app/src/chains/${COIN}.py > /tmp/new_${COIN}.py
+           mv /tmp/new_${COIN}.py /app/src/chains/${COIN}.py
+shopt -u nocasematch
+fi
 exec /app/run_encompass_mercury --coin ${COIN_SYM}
+
