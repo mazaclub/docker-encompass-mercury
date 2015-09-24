@@ -25,9 +25,11 @@ ENCOMPASS_MERCURY_DONATION_ADDR=${ENCOMPASS_MERCURY_DONATION_ADDR:-MPXEVRtXTBrz6
 ENCOMPASS_MERCURY_REPORT_HOST=${ENCMPASS_MERCURY_REPORT_HOST:-${ENCOMPASS_MERCURY_HOSTNAME}}
 ENCOMPASS_MERCURY_OUTSIDE_TCP_PORT=${ENCOMPASS_MERCURY_OUTSIDE_TCP_PORT:-${ENCOMPASS_MERCURY_TCP_PORT}}
 ENCOMPASS_MERCURY_OUTSIDE_SSL_PORT=${ENCOMPASS_MERCURY_OUTSIDE_SSL_PORT:-${ENCOMPASS_MERCURY_SSL_PORT}}
+ENCOMPASS_MERCURY_CERT_FILE=${ENCOMPASS_MERCURY_CERT_FILE:-/app/certs/encompass-mercury-${COIN_SYM}.crt}
+ENCOMPASS_MERCURY_KEYT_FILE=${ENCOMPASS_MERCURY_KEY_FILE:-/app/certs/encompass-mercury-${COIN_SYM}.key}
 
 
-if [ ! -f /app/certs/encompass-mercury-${COIN_SYM}.key ] ; then
+if [ ! -f ${ENCOMPASS_MERCURY_KEY_FILE}  ] ; then
    echo "/app/certs/encompass-mercury-${COIN_SYM}.key not found"
    echo "Refusing to start with out a cert key"
    echo "Make a new key with /app/gen_cert.sh"
@@ -40,8 +42,7 @@ if [ ! -f /app/certs/encompass-mercury-${COIN_SYM}.key ] ; then
    echo "correctly so that you can save your new certificate."
    exit 55
 fi
-if [ ! -f /app/certs/encompass-mercury-${COIN_SYM}.crt ] ; then
-   if [ ! -f /app/certs/encompass-mercury-${COIN_SYM}.pem ] ; then 
+if [ ! -f ${ENCOMPASS_MERCURY_CERT_FILE} ] ; then
       echo "Don't see your crt as .crt or .pem file in /app/certs"
       echo "If this server was in operation and you regenerate your certificat"
       echo "clients will refuse to connect via SSL unless the remove old cert info"
@@ -51,9 +52,8 @@ if [ ! -f /app/certs/encompass-mercury-${COIN_SYM}.crt ] ; then
       echo "or run /app/gen_cert.sh directly - ensure that you've mapped /app/certs"
       echo "correctly so that you can save your new certificate."
       exit 54
-   fi
 fi
-cert_host=$( openssl x509 -in /app/certs/encompass-mercury-mzc.pem  -text -noout |grep Subject |grep CN|awk 'BEGIN{FS="/|=|,"; OFS="\t"}{print $12}')
+cert_host=$( openssl x509 -in ${ENCOMPASS_MERCURY_CERT_FILE} -text -noout |grep Subject |grep CN|awk 'BEGIN{FS="/|=|,"; OFS="\t"}{print $12}')
 if [ "${cert_host}" != "${ENCOMPASS_MERCURY_REPORT_HOST}" ] ; then
    echo "Your externl name and your SSL certificate don't match"
       echo "If this server was in operation and you regenerate your certificat"
