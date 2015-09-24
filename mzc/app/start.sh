@@ -22,11 +22,11 @@ ENCOMPASS_MERCURY_IRCNICK=${ENCOMPASS_MERCURY_IRCNICK:-$[ 1 + $[RANDOM % 99999 ]
 ENCOMPASS_MERCURY_BLOCK_CACHE_SIZE=${ENCOMPASS_MERCURY_BLOCK_CACHE_SIZE:-120}
 ENCOMPASS_MERCURY_PRUNING_LIMIT=${ENCOMPASS_MERCURY_PRUNING_LIMIT:-10000}
 ENCOMPASS_MERCURY_DONATION_ADDR=${ENCOMPASS_MERCURY_DONATION_ADDR:-MPXEVRtXTBrz6xfn9iCyzK7Kr8P69oZjyq}
-ENCOMPASS_MERCURY_REPORT_HOST=${ENCMPASS_MERCURY_REPORT_HOST:-${ENCOMPASS_MERCURY_HOSTNAME}}
+ENCOMPASS_MERCURY_REPORT_HOST=${ENCOMPASS_MERCURY_REPORT_HOST:-${ENCOMPASS_MERCURY_HOSTNAME}}
 ENCOMPASS_MERCURY_OUTSIDE_TCP_PORT=${ENCOMPASS_MERCURY_OUTSIDE_TCP_PORT:-${ENCOMPASS_MERCURY_TCP_PORT}}
 ENCOMPASS_MERCURY_OUTSIDE_SSL_PORT=${ENCOMPASS_MERCURY_OUTSIDE_SSL_PORT:-${ENCOMPASS_MERCURY_SSL_PORT}}
 ENCOMPASS_MERCURY_CERT_FILE=${ENCOMPASS_MERCURY_CERT_FILE:-/app/certs/encompass-mercury-${COIN_SYM}.crt}
-ENCOMPASS_MERCURY_KEYT_FILE=${ENCOMPASS_MERCURY_KEY_FILE:-/app/certs/encompass-mercury-${COIN_SYM}.key}
+ENCOMPASS_MERCURY_KEY_FILE=${ENCOMPASS_MERCURY_KEY_FILE:-/app/certs/encompass-mercury-${COIN_SYM}.key}
 
 
 if [ ! -f ${ENCOMPASS_MERCURY_KEY_FILE}  ] ; then
@@ -95,7 +95,7 @@ IFS="" sed -e 's/coind_host\ \=.*/coind_host\ \=\ '${COIND}'/g' \
         -e 's/^report_stratum_tcp_port\ \=.*/report_stratum_tcp_port\ \=\ '${ENCOMPASS_MERCURY_OUTSIDE_TCP_PORT}'/g' \
         -e 's/^report_host\ \=.*/report_host\ \=\ '${ENCOMPASS_MERCURY_REPORT_HOST}'/g' \
         -e 's/^ssl_certfile\ \=.*/ssl_certfile\ \=\ '${ENCOMPASS_MERCURY_CERT_FILE}'/g' \
-        -e 's/^sl_keyfile\ \=.*/ssl_keyfile\ \=\ '${ENCOMPASS_MERCURY_KEY_FILE}'/g' \
+        -e 's/^ssl_keyfile\ \=.*/ssl_keyfile\ \=\ '${ENCOMPASS_MERCURY_KEY_FILE}'/g' \
         encompass-mercury.conf > /tmp/new-encompass-mercury.conf
 cp /tmp/new-encompass-mercury.conf /etc/encompass-mercury.conf
 shopt -s nocasematch
