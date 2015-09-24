@@ -27,6 +27,46 @@ ENCOMPASS_MERCURY_OUTSIDE_TCP_PORT=${ENCOMPASS_MERCURY_OUTSIDE_TCP_PORT:-${ENCOM
 ENCOMPASS_MERCURY_OUTSIDE_SSL_PORT=${ENCOMPASS_MERCURY_OUTSIDE_SSL_PORT:-${ENCOMPASS_MERCURY_SSL_PORT}}
 
 
+if [ ! -f /app/certs/encompass-mercury-${COIN_SYM}.key ] ; then
+   echo "/app/certs/encompass-mercury-${COIN_SYM}.key not found"
+   echo "Refusing to start with out a cert key"
+   echo "Make a new key with /app/gen_cert.sh"
+   echo "If this server was in operation and you regenerate your certificat"
+   echo "clients will refuse to connect via SSL unless the remove old cert info"
+   touch /etc/service/encompass-mercury/down
+   echo "Either shut down this container and run the host-level shell script"
+   echo "to run this image and create a cert for normal operation of this image"
+   echo "or run /app/gen_cert.sh directly - ensure that you've mapped /app/certs"
+   echo "correctly so that you can save your new certificate."
+   exit 55
+fi
+if [ ! -f /app/certs/encompass-mercury-${COIN_SYM}.crt ] ; then
+   if [ ! -f /app/certs/encompass-mercury-${COIN_SYM}.pem ] ; then 
+      echo "Don't see your crt as .crt or .pem file in /app/certs"
+      echo "If this server was in operation and you regenerate your certificat"
+      echo "clients will refuse to connect via SSL unless the remove old cert info"
+      touch /etc/service/encompass-mercury/down
+      echo "Either shut down this container and run the host-level shell script"
+      echo "to run this image and create a cert for normal operation of this image"
+      echo "or run /app/gen_cert.sh directly - ensure that you've mapped /app/certs"
+      echo "correctly so that you can save your new certificate."
+      exit 54
+   fi
+fi
+cert_host=$( openssl x509 -in /app/certs/encompass-mercury-mzc.pem  -text -noout |grep Subject |grep CN|awk 'BEGIN{FS="/|=|,"; OFS="\t"}{print $12}')
+if [ "${cert_host}" != "${ENCOMPASS_MERCURY_REPORT_HOST}" ] ; then
+   echo "Your externl name and your SSL certificate don't match"
+      echo "If this server was in operation and you regenerate your certificat"
+      echo "clients will refuse to connect via SSL unless the remove old cert info"
+      touch /etc/service/encompass-mercury/down
+      echo "Either shut down this container and run the host-level shell script"
+      echo "to run this image and create a cert for normal operation of this image"
+      echo "or run /app/gen_cert.sh directly - ensure that you've mapped /app/certs"
+      echo "correctly so that you can save your new certificate."
+      exit 50
+fi
+ 
+
 test -z $ENCOMPASS_MERCURY_PASSWORD && ENCOMPASS_MERCURY_PASSWORD=$(apg -a 0 -m 32 -x 32 -n 1)
 if [ "${TXINDEX}" = "1" ] ; then
    echo "-txindex is set    good to go"
