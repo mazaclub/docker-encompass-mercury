@@ -94,6 +94,8 @@ IFS="" sed -e 's/coind_host\ \=.*/coind_host\ \=\ '${COIND}'/g' \
         -e 's/^report_stratum_tcp_ssl_port\ \=.*/report_stratum_tcp_ssl_port\ \=\ '${ENCOMPASS_MERCURY_OUTSIDE_SSL_PORT}'/g' \
         -e 's/^report_stratum_tcp_port\ \=.*/report_stratum_tcp_port\ \=\ '${ENCOMPASS_MERCURY_OUTSIDE_TCP_PORT}'/g' \
         -e 's/^report_host\ \=.*/report_host\ \=\ '${ENCOMPASS_MERCURY_REPORT_HOST}'/g' \
+        -e 's/^ssl_certfile\ \=.*/ssl_certfile\ \=\ '${ENCOMPASS_MERCURY_CERT_FILE}'/g' \
+        -e 's/^sl_keyfile\ \=.*/ssl_keyfile\ \=\ '${ENCOMPASS_MERCURY_KEY_FILE}'/g' \
         encompass-mercury.conf > /tmp/new-encompass-mercury.conf
 cp /tmp/new-encompass-mercury.conf /etc/encompass-mercury.conf
 shopt -s nocasematch
