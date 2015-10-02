@@ -30,12 +30,13 @@ ENCOMPASS_MERCURY_KEY_FILE=${ENCOMPASS_MERCURY_KEY_FILE:-/app/certs/encompass-me
 
 
 if [ ! -f ${ENCOMPASS_MERCURY_KEY_FILE}  ] ; then
-   echo "/app/certs/encompass-mercury-${COIN_SYM}.key not found"
+   echo "${ENCOMPASS_MERCURY_KEY_FILE} not found"
    echo "Refusing to start with out a cert key"
    echo "Make a new key with /app/gen_cert.sh"
    echo "If this server was in operation and you regenerate your certificat"
    echo "clients will refuse to connect via SSL unless the remove old cert info"
-   touch /etc/service/encompass-mercury/down
+   echo "To temporarily stop the encompass-mercury service:"
+   echo "touch /etc/service/encompass-mercury/down"
    echo "Either shut down this container and run the host-level shell script"
    echo "to run this image and create a cert for normal operation of this image"
    echo "or run /app/gen_cert.sh directly - ensure that you've mapped /app/certs"
@@ -94,8 +95,8 @@ IFS="" sed -e 's/coind_host\ \=.*/coind_host\ \=\ '${COIND}'/g' \
         -e 's/^report_stratum_tcp_ssl_port\ \=.*/report_stratum_tcp_ssl_port\ \=\ '${ENCOMPASS_MERCURY_OUTSIDE_SSL_PORT}'/g' \
         -e 's/^report_stratum_tcp_port\ \=.*/report_stratum_tcp_port\ \=\ '${ENCOMPASS_MERCURY_OUTSIDE_TCP_PORT}'/g' \
         -e 's/^report_host\ \=.*/report_host\ \=\ '${ENCOMPASS_MERCURY_REPORT_HOST}'/g' \
-        -e 's/^ssl_certfile\ \=.*/ssl_certfile\ \=\ '${ENCOMPASS_MERCURY_CERT_FILE}'/g' \
-        -e 's/^ssl_keyfile\ \=.*/ssl_keyfile\ \=\ '${ENCOMPASS_MERCURY_KEY_FILE}'/g' \
+        -e 's|^ssl_certfile\ \=.*|ssl_certfile\ \=\ '${ENCOMPASS_MERCURY_CERT_FILE}'|g' \
+        -e 's|^ssl_keyfile\ \=.*|ssl_keyfile\ \=\ '${ENCOMPASS_MERCURY_KEY_FILE}'|g' \
         encompass-mercury.conf > /tmp/new-encompass-mercury.conf
 cp /tmp/new-encompass-mercury.conf /etc/encompass-mercury.conf
 shopt -s nocasematch
