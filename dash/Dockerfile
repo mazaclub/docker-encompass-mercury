@@ -1,4 +1,4 @@
-FROM		mazaclub/dashpay-base
+FROM		mazaclub/dashcoind-base
 # IMAGE mazaclub/encompass-mercury:dash
 MAINTAINER	Rob Nelson <guruvan@maza.club>
 
@@ -28,7 +28,8 @@ RUN		echo "bitcoin hard nofile 65536" >> /etc/security/limits.conf \
                   && git checkout $(cat /.branch) \
 		  && python setup.py install \
                   && mkdir -pv /app \
-                  && mv /encompass-mercury/* /app \
+                  && cp -av /encompass-mercury/* /app \
+                  && rm -rf  /encompass-mercury/*  \
 		  && rm -rf /etc/service/sshd
 
 RUN		chmod +x /etc/service/encompass-mercury/run
