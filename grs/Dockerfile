@@ -1,4 +1,4 @@
-FROM		mazaclub/grscoind-base
+FROM		mazaclub/groestlcoind-base
 # IMAGE mazaclub/encompass-mercury:grs
 MAINTAINER	Rob Nelson <guruvan@maza.club>
 

@@ -1,4 +1,4 @@
-FROM		mazaclub/dashcoind-base
+FROM		mazaclub/dashpay-base
 # IMAGE mazaclub/encompass-mercury:dash
 MAINTAINER	Rob Nelson <guruvan@maza.club>
 
