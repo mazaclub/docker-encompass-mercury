@@ -19,8 +19,7 @@ RUN		apt-get update \
 		  && apt-get install -y \
 		    apg python-dev python2.7 python-pip \
 		    git libleveldb1 libleveldb-dev 
-RUN		pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U
-
+RUN		pip install --upgrade six
 RUN		echo "bitcoin hard nofile 65536" >> /etc/security/limits.conf \
      		  && echo "bitcoin soft nofile 65536" >> /etc/security/limits.conf \
 		  && cd / \
