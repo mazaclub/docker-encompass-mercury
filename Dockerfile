@@ -1,4 +1,5 @@
-FROM		mazaclub/mazacoind-base
+FROM		maza/maza-core-daemon
+#FROM		mazaclub/mazacoind-base
 # IMAGE mazaclub/encompass-mercury:mzc
 MAINTAINER	Rob Nelson <guruvan@maza.club>
 
